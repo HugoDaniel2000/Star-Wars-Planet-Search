@@ -4,15 +4,15 @@ import apiPlanets from '../helpers/api';
 import AppContext from './AppContext';
 
 function AppProvider({ children }) {
-  const [planets, setPlanets] = useState();
+  const [data, setData] = useState();
 
   useEffect(() => {
-    apiPlanets().then((data) => setPlanets(data));
+    apiPlanets().then((planets) => setData(planets));
   }, []);
 
   return (
     <main>
-      <AppContext.Provider value={ planets }>
+      <AppContext.Provider value={ data }>
         {children}
       </AppContext.Provider>
     </main>
