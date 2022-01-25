@@ -12,11 +12,23 @@ const header = [
 ];
 
 function Table() {
-  const { data, filterName } = useContext(AppContext);
+  const { data, filterName, valuesFilter } = useContext(AppContext);
   let planets = data;
   if (filterName !== '') {
     planets = data.filter((value) => value.name
       .toLowerCase().includes(filterName.toLowerCase()));
+  }
+  if (valuesFilter.length > 0) {
+    if (valuesFilter[1] === 'maior que') {
+      planets = planets
+        .filter((values) => Number(values[valuesFilter[0]]) > Number(valuesFilter[2]));
+    } if (valuesFilter[1] === 'menor que') {
+      planets = planets
+        .filter((values) => Number(values[valuesFilter[0]]) < Number(valuesFilter[2]));
+    } if (valuesFilter[1] === 'igual a') {
+      planets = planets
+        .filter((values) => Number(values[valuesFilter[0]]) === Number(valuesFilter[2]));
+    }
   }
 
   return (
@@ -24,13 +36,13 @@ function Table() {
       <thead>
         <tr>
           {
-            header.map((item, i) => (<th key={ i }>{ item }</th>))
+            header.map((item) => (<th key={ item }>{ item }</th>))
           }
         </tr>
       </thead>
       <tbody>
-        {planets.length > 0 && planets.map((planet, i) => (
-          <tr key={ i }>
+        {planets.length > 0 && planets.map((planet) => (
+          <tr key={ planet.name }>
             <td>{ planet.name }</td>
             <td>{ planet.rotation_period }</td>
             <td>{ planet.orbital_period }</td>
