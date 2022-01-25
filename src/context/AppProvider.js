@@ -4,7 +4,8 @@ import apiPlanets from '../helpers/api';
 import AppContext from './AppContext';
 
 function AppProvider({ children }) {
-  const [data, setData] = useState();
+  const [data, setData] = useState([]);
+  const [filterName, setFilterName] = useState('');
 
   useEffect(() => {
     apiPlanets().then((planets) => setData(planets));
@@ -12,7 +13,7 @@ function AppProvider({ children }) {
 
   return (
     <main>
-      <AppContext.Provider value={ data }>
+      <AppContext.Provider value={ { data, filterName, setFilterName } }>
         {children}
       </AppContext.Provider>
     </main>

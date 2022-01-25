@@ -12,12 +12,13 @@ const header = [
 ];
 
 function Table() {
-  const data = useContext(AppContext);
-  if (!data) {
-    return <span>Not found Planets</span>;
+  const { data, filterName } = useContext(AppContext);
+  let planets = data;
+  if (filterName !== '') {
+    planets = data.filter((value) => value.name
+      .toLowerCase().includes(filterName.toLowerCase()));
   }
 
-  // console.log(planets);
   return (
     <table>
       <thead>
@@ -28,7 +29,7 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        {data.length > 0 && data.map((planet, i) => (
+        {planets.length > 0 && planets.map((planet, i) => (
           <tr key={ i }>
             <td>{ planet.name }</td>
             <td>{ planet.rotation_period }</td>
