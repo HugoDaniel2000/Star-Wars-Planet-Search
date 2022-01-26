@@ -13,25 +13,34 @@ const header = [
 
 function Table() {
   const { data, filterName, valuesFilter } = useContext(AppContext);
-  let planets = data;
-  if (filterName !== '') {
-    planets = data.filter((value) => value.name
-      .toLowerCase().includes(filterName.toLowerCase()));
-  }
-  if (valuesFilter.length > 0) {
-    valuesFilter.forEach((element) => {
-      if (element.comparison === 'maior que') {
-        planets = planets
-          .filter((values) => Number(values[element.column]) > Number(element.number));
-      } if (element.comparison === 'menor que') {
-        planets = planets
-          .filter((values) => Number(values[element.column]) > Number(element.number));
-      } if (element.comparison === 'igual a') {
-        planets = planets
-          .filter((values) => Number(values[element.column]) > Number(element.number));
-      }
-    });
-  }
+  const planets = data;
+
+  const canShowPlanet = (planet) => {
+    const { name } = planet;
+
+    if (!name.toLowerCase().includes(filterName.toLowerCase())) {
+      return false;
+    }
+    const result = Object.keys(valuesFilter).every(
+      (index) => {
+        const { column, comparison, number } = valuesFilter[index];
+
+        if (comparison === 'maior que') {
+          return Number(planet[column]) > Number(number);
+        }
+
+        if (comparison === 'menor que') {
+          return Number(planet[column]) < Number(number);
+        }
+
+        return Number(planet[column]) === Number(number);
+      },
+    );
+
+    return result;
+  };
+
+  const displayPlanets = planets.filter((value) => canShowPlanet(value));
 
   return (
     <table>
@@ -43,7 +52,7 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        {planets.length > 0 && planets.map((planet) => (
+        { displayPlanets.map((planet) => (
           <tr key={ planet.name }>
             <td>{ planet.name }</td>
             <td>{ planet.rotation_period }</td>
