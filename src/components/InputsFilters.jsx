@@ -14,6 +14,7 @@ function InputsFilters() {
   const {
     setFilterName,
     setValuesFilter,
+    valuesFilter,
   } = useContext(AppContext);
 
   const filterByName = ({ target }) => {
@@ -21,7 +22,9 @@ function InputsFilters() {
   };
 
   const filterValues = () => {
-    setValuesFilter([column, comparison, number]);
+    const value = valuesFilter;
+    const a = value.concat({ column, comparison, number });
+    setValuesFilter(a);
   };
   return (
     <div>
@@ -32,13 +35,21 @@ function InputsFilters() {
         onChange={ filterByName }
       />
       <select
+        value={ column }
         onChange={ ({ target }) => setColumn(target.value) }
         data-testid="column-filter"
       >
-        {columnFilter.map((value) => <option key={ value }>{ value }</option>)}
+        {
+          columnFilter.map((_column) => (
+            !valuesFilter.find((filter) => filter.column === _column) && (
+              <option>{ _column }</option>
+            )
+          ))
+        }
       </select>
 
       <select
+        value={ comparison }
         onChange={ ({ target }) => setComparison(target.value) }
         data-testid="comparison-filter"
       >

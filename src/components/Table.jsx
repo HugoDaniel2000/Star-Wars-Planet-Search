@@ -19,16 +19,18 @@ function Table() {
       .toLowerCase().includes(filterName.toLowerCase()));
   }
   if (valuesFilter.length > 0) {
-    if (valuesFilter[1] === 'maior que') {
-      planets = planets
-        .filter((values) => Number(values[valuesFilter[0]]) > Number(valuesFilter[2]));
-    } if (valuesFilter[1] === 'menor que') {
-      planets = planets
-        .filter((values) => Number(values[valuesFilter[0]]) < Number(valuesFilter[2]));
-    } if (valuesFilter[1] === 'igual a') {
-      planets = planets
-        .filter((values) => Number(values[valuesFilter[0]]) === Number(valuesFilter[2]));
-    }
+    valuesFilter.forEach((element) => {
+      if (element.comparison === 'maior que') {
+        planets = planets
+          .filter((values) => Number(values[element.column]) > Number(element.number));
+      } if (element.comparison === 'menor que') {
+        planets = planets
+          .filter((values) => Number(values[element.column]) > Number(element.number));
+      } if (element.comparison === 'igual a') {
+        planets = planets
+          .filter((values) => Number(values[element.column]) > Number(element.number));
+      }
+    });
   }
 
   return (
