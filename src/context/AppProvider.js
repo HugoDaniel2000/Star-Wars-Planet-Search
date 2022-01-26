@@ -12,9 +12,6 @@ function AppProvider({ children }) {
     apiPlanets().then((planets) => setData(planets));
   }, []);
 
-  console.log(valuesFilter);
-  // console.log(data);
-
   return (
     <main>
       <AppContext.Provider

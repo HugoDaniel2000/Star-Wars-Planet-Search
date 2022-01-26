@@ -12,10 +12,10 @@ const header = [
 ];
 
 function Table() {
-  const { data, filterName, valuesFilter } = useContext(AppContext);
+  const { data, filterName, valuesFilter, setValuesFilter } = useContext(AppContext);
   const planets = data;
 
-  const canShowPlanet = (planet) => {
+  const showPlanet = (planet) => {
     const { name } = planet;
 
     if (!name.toLowerCase().includes(filterName.toLowerCase())) {
@@ -40,37 +40,61 @@ function Table() {
     return result;
   };
 
-  const displayPlanets = planets.filter((value) => canShowPlanet(value));
+  const displayPlanets = planets.filter((value) => showPlanet(value));
+
+  const removeFilter = (index) => {
+    const arrayFilter = valuesFilter.filter((value, i) => index !== i);
+    return setValuesFilter(arrayFilter);
+  };
 
   return (
-    <table>
-      <thead>
-        <tr>
-          {
-            header.map((item) => (<th key={ item }>{ item }</th>))
-          }
-        </tr>
-      </thead>
-      <tbody>
-        { displayPlanets.map((planet) => (
-          <tr key={ planet.name }>
-            <td>{ planet.name }</td>
-            <td>{ planet.rotation_period }</td>
-            <td>{ planet.orbital_period }</td>
-            <td>{ planet.diameter }</td>
-            <td>{ planet.climate }</td>
-            <td>{ planet.gravity }</td>
-            <td>{ planet.terrain }</td>
-            <td>{ planet.surface_water }</td>
-            <td>{ planet.population }</td>
-            <td>{ planet.films }</td>
-            <td>{ planet.created }</td>
-            <td>{ planet.edited }</td>
-            <td>{ planet.url }</td>
-          </tr>
+    <div>
+      <div>
+        {valuesFilter.map(({ column, comparison, number }, index) => (
+          <div
+            data-testid="filter"
+            key={ index }
+          >
+            <p>{`${column}, ${comparison}, ${number}`}</p>
+            <button
+              type="button"
+              onClick={ () => removeFilter(index) }
+            >
+              X
+
+            </button>
+          </div>
         ))}
-      </tbody>
-    </table>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            {
+              header.map((item) => (<th key={ item }>{ item }</th>))
+            }
+          </tr>
+        </thead>
+        <tbody>
+          { displayPlanets.map((planet) => (
+            <tr key={ planet.name }>
+              <td>{ planet.name }</td>
+              <td>{ planet.rotation_period }</td>
+              <td>{ planet.orbital_period }</td>
+              <td>{ planet.diameter }</td>
+              <td>{ planet.climate }</td>
+              <td>{ planet.gravity }</td>
+              <td>{ planet.terrain }</td>
+              <td>{ planet.surface_water }</td>
+              <td>{ planet.population }</td>
+              <td>{ planet.films }</td>
+              <td>{ planet.created }</td>
+              <td>{ planet.edited }</td>
+              <td>{ planet.url }</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
