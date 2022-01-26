@@ -10,11 +10,13 @@ function InputsFilters() {
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [number, setNumber] = useState(0);
-
+  const [sortColumn, setSortColumn] = useState('population');
+  const [sort, setSort] = useState('');
   const {
     setFilterName,
     setValuesFilter,
     valuesFilter,
+    setOrderFilter,
   } = useContext(AppContext);
 
   const filterByName = ({ target }) => {
@@ -26,6 +28,8 @@ function InputsFilters() {
     const a = value.concat({ column, comparison, number });
     setValuesFilter(a);
   };
+
+  const filterOrder = () => setOrderFilter([{ sortColumn, sort }]);
   return (
     <div>
       <input
@@ -69,6 +73,50 @@ function InputsFilters() {
         onClick={ filterValues }
       >
         Filtrar
+
+      </button>
+
+      <select
+        value={ sortColumn }
+        data-testid="column-sort"
+        onChange={ ({ target }) => setSortColumn(target.value) }
+      >
+        {
+          columnFilter.map((_column) => (
+            <option key={ _column }>{ _column }</option>
+          ))
+        }
+      </select>
+      <label htmlFor="input-radio1">
+        {' '}
+        Ascendente
+        <input
+          id="input-radio1"
+          name="input-radio"
+          type="radio"
+          data-testid="column-sort-input-asc"
+          value="ASC"
+          onClick={ ({ target }) => setSort(target.value) }
+        />
+      </label>
+      <label htmlFor="input-radio2">
+        {' '}
+        Descendente
+        <input
+          id="input-radio2"
+          name="input-radio"
+          type="radio"
+          data-testid="column-sort-input-desc"
+          value="DESC"
+          onClick={ ({ target }) => setSort(target.value) }
+        />
+      </label>
+      <button
+        type="button"
+        data-testid="column-sort-button"
+        onClick={ filterOrder }
+      >
+        Ordenar
 
       </button>
     </div>

@@ -7,6 +7,7 @@ function AppProvider({ children }) {
   const [data, setData] = useState([]);
   const [filterName, setFilterName] = useState('');
   const [valuesFilter, setValuesFilter] = useState([]);
+  const [orderFilter, setOrderFilter] = useState([]);
 
   useEffect(() => {
     apiPlanets().then((planets) => setData(planets));
@@ -21,6 +22,8 @@ function AppProvider({ children }) {
           setFilterName,
           setValuesFilter,
           valuesFilter,
+          orderFilter,
+          setOrderFilter,
         } }
       >
         {children}

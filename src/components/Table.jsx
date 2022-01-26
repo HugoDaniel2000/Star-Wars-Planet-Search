@@ -12,7 +12,13 @@ const header = [
 ];
 
 function Table() {
-  const { data, filterName, valuesFilter, setValuesFilter } = useContext(AppContext);
+  const {
+    data,
+    filterName,
+    valuesFilter,
+    setValuesFilter,
+    orderFilter,
+  } = useContext(AppContext);
   const planets = data;
 
   const showPlanet = (planet) => {
@@ -40,7 +46,18 @@ function Table() {
     return result;
   };
 
-  const displayPlanets = planets.filter((value) => showPlanet(value));
+  let displayPlanets = planets.filter((value) => showPlanet(value))
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  if (orderFilter.length > 0) {
+    if (orderFilter[0].sort === 'ASC') {
+      displayPlanets = displayPlanets
+        .sort((a, b) => a[orderFilter[0].sortColumn] - b[orderFilter[0].sortColumn]);
+    } else {
+      displayPlanets = displayPlanets
+        .sort((a, b) => b[orderFilter[0].sortColumn] - a[orderFilter[0].sortColumn]);
+    }
+  }
 
   const removeFilter = (index) => {
     const arrayFilter = valuesFilter.filter((value, i) => index !== i);
@@ -77,7 +94,7 @@ function Table() {
         <tbody>
           { displayPlanets.map((planet) => (
             <tr key={ planet.name }>
-              <td>{ planet.name }</td>
+              <td data-testid="planet-name">{ planet.name }</td>
               <td>{ planet.rotation_period }</td>
               <td>{ planet.orbital_period }</td>
               <td>{ planet.diameter }</td>
