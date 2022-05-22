@@ -25,8 +25,8 @@ function InputsFilters() {
 
   const filterValues = () => {
     const value = valuesFilter;
-    const a = value.concat({ column, comparison, number });
-    setValuesFilter(a);
+    const array = value.concat({ column, comparison, number });
+    setValuesFilter(array);
   };
 
   const filterOrder = () => setOrderFilter([{ sortColumn, sort }]);
