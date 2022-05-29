@@ -2,7 +2,7 @@
 
 ## :brain: Habilidades
 
-Contruir uma aplicção Front-End usando:
+Contruir uma aplicação Front-End usando:
 
 - Context Api
 - React Hooks
